@@ -1,1 +1,1 @@
-<h1>A SvelteKit Template</h1>
+<h1>A SvelteKit Template (new)</h1>
