@@ -1,38 +1,91 @@
-# create-svelte
+Create the SvelteKit Template
+=============================
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
-
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
+Initial Setup
+-------------
 
 ```bash
-# create a new project in the current directory
-npm create svelte@latest
+$ npm create svelte@latest template
 
-# create a new project in my-app
-npm create svelte@latest my-app
+create-svelte version 2.0.0-next.192
+
+Welcome to SvelteKit!
+
+This is release candidate software; expect bugs and missing features.
+
+Problems? Open an issue on https://github.com/sveltejs/kit/issues if none exists already.
+
+√ Which Svelte app template? » Skeleton project
+√ Add type checking with TypeScript? » No
+√ Add ESLint for code linting? ... No
+√ Add Prettier for code formatting? ... No
+√ Add Playwright for browser testing? ... No
+
+Your project is ready!
+
+$ cd template
+$ npm install
+
+added 44 packages, and audited 45 packages in 28s
 ```
 
-## Developing
+Change the file `src/routes/+page.svelte` to:
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+```svelte
+<h1>A SvelteKit Template</h1>
+```
 
 ```bash
-npm run dev
+$ git init && git add -A && git commit -m "initial commit"
+Initialized empty Git repository in C:/Users/johnd/sveltekit/blog/.git/
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+$ npm run dev -- --open
+
 ```
 
-## Building
+You should see your web page, displaying 'A SvelteKit Template'.
 
-To create a production version of your app:
+Deploy to the Internet
+----------------------
+
+Install the SvelteKit "static adapter":
 
 ```bash
-npm run build
+$ npm install -D @sveltejs/adapter-static@next
 ```
 
-You can preview the production build with `npm run preview`.
+In `svelte.config.js`, change 'adapter-auto' to 'adapter-static'
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+Create the file `routes/+layout.js`:
+
+```js
+export const prerender = true
+```
+
+```bash
+$ npm run build
+$ npm run preview -- --open
+```
+
+As before, you should see your web site. But this time, it's being served
+from the file `index.html` which was placed inside a folder named `build`.
+You can now deploy that to surge:
+
+```bash
+$ surge ./build
+```
+
+When surge suggests a domain name, you can edit that. Just make sure it ends
+in `.surge.sh` and if you want to ensure that the name isn't already being
+used, try starting with name with your initials followed by a '-' character.
+
+You should now be able to access the site directly.
+
+Next, add a new script in your `package.json` file:
+
+```js
+"deploy": "npm run build && surge ./build --domain https://<domain>"
+```
+
+Substituting your selected domain name for `<domain>`.
+
